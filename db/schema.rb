@@ -13,8 +13,10 @@
 ActiveRecord::Schema[7.0].define(version: 2022_06_16_113238) do
   create_table "data_centers", force: :cascade do |t|
     t.string "name"
+    t.integer "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["region_id"], name: "index_data_centers_on_region_id"
   end
 
   create_table "raids", force: :cascade do |t|
@@ -34,8 +36,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_113238) do
   create_table "strategies", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.integer "raid_id"
+    t.integer "data_center_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["data_center_id"], name: "index_strategies_on_data_center_id"
+    t.index ["raid_id"], name: "index_strategies_on_raid_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -47,4 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_113238) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "data_centers", "regions"
+  add_foreign_key "strategies", "data_centers"
+  add_foreign_key "strategies", "raids"
 end
